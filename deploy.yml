@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myweb-deployment
+  labels:
+    app: kubernetes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubernetes
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: kubernetes
+    spec:
+      containers:
+      - image: ashwani2399/webserver:v1
+        name: kubernetes
+        volumeMounts:
+        - name: myweb-persistent-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: myweb-persistent-storage
+        persistentVolumeClaim:
+          claimName: my-eks-pvc1
